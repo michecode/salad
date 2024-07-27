@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { Header } from "./_components/header";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -37,7 +38,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${paquito.variable} ${generalSans.variable}`}>
-      <body>
+      <body className="bg-roseWhite">
+        <Header/>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
