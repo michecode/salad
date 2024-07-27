@@ -1,26 +1,13 @@
-import Link from "next/link";
+import { Button } from "./_components/ui/button";
 
-import { LatestPost } from "~/app/_components/post";
-import { api, HydrateClient } from "~/trpc/server";
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-
-  void api.post.getLatest.prefetch();
-
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
-          </div>
-
-          <LatestPost />
-        </div>
-      </main>
-    </HydrateClient>
+    <main className="flex min-h-screen">
+      <div className="flex w-1/2 mx-auto flex-col items-center justify-center space-y-4">
+        <h1 className="text-center text-6xl font-serif font-bold">Buy Archival Art from Museums Across the Country</h1>
+        <Button>Shop</Button>
+      </div>
+    </main>
   );
-}
+};
