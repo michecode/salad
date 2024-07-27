@@ -2,19 +2,18 @@ import dotenv from 'dotenv'; // Load environment variables from .env.local
 import { PrismaClient } from '@prisma/client';
 import { createApi } from 'unsplash-js';
 import { type ApiResponse } from 'unsplash-js/dist/helpers/response';
-import { type Basic as BasicUser } from 'unsplash-js/dist/methods/users/types';
 import { type Basic as BasicPhoto } from 'unsplash-js/dist/methods/photos/types';
 
 dotenv.config({ path: '.env.local' });
 
 const UNSPLASH_MUSEUMS = [
   'tepapa', // Museum of New Zealand Te Papa Tongarewa
-  // 'artchicago', // Art Institute of Chicago
-  // 'bostonpubliclibrary', // Boston Public Library
-  // 'libraryofcongress', // Library of Congress
-  // 'birminghammuseumstrust', // Birmingham Museums Trust
-  // 'europeana', // Europeana
-  // 'nasa', // NASA
+  'artchicago', // Art Institute of Chicago
+  'bostonpubliclibrary', // Boston Public Library
+  'libraryofcongress', // Library of Congress
+  'birminghammuseumstrust', // Birmingham Museums Trust
+  'europeana', // Europeana
+  'nasa', // NASA
 ];
 
 // @DEV: I only have 50 requests per hour because of unsplash limitations
@@ -39,6 +38,7 @@ async function seed() {
         orderBy: 'popular',
       });
       
+      console.log(`fetching from ${museum} with page: ${index+1}`);
       responsePromises.push(unsplashRequest);
     }
   });
@@ -52,9 +52,10 @@ async function seed() {
       images = images.concat(museum.response.results);
     });
   }).catch((e) => console.error(e));
-  console.log(images, images.length);
+  console.log('Fetched all images', `Total Images: ${images.length}`);
   // End Fetch
 
+  console.log('starting data insert');
   const products = await prisma.$transaction(async (txn) => {
     await txn.product.deleteMany();
 
@@ -81,65 +82,7 @@ async function seed() {
       data: formattedImages,
     });
   });
-
-	// const workspaces = await prisma.$transaction(async (txn) => {
-	// 	await txn.workspaceUser.deleteMany();
-	// 	await txn.workspace.deleteMany();
-	// 	return await txn.workspace.createManyAndReturn({
-	// 		data: [
-	// 			{ name: 'general' },
-	// 			{ name: 'developers' },
-	// 			{ name: 'marketing' },
-	// 			{ name: 'designers' }
-	// 		]
-	// 	});
-	// });
-
-	// console.log(`Created workspaces: ${JSON.stringify(workspaces)}`);
-
-	// const users = await prisma.$transaction(async (txn) => {
-	// 	await txn.user.deleteMany();
-	// 	return await txn.user.createManyAndReturn({
-	// 		data: [
-	// 			{
-	// 				name: 'Alice Jenkins',
-	// 				email: 'alice_jen@awesome.com',
-	// 				dateAdded: new Date(2023, 2, 15),
-	// 				lastLogin: new Date(2024, 5, 17)
-	// 			},
-	// 			{
-	// 				name: 'Bob Piper',
-	// 				email: 'bob.piper@test.org',
-	// 				dateAdded: new Date(2024, 4, 2),
-	// 				lastLogin: new Date(2024, 5, 18)
-	// 			}
-	// 		]
-	// 	});
-	// });
-
-	// console.log(`Created users: ${JSON.stringify(users)}`);
-
-	// const workspaceUsers = await prisma.$transaction(async (txn) => {
-	// 	// await txn.workspaceUser.deleteMany();
-
-	// 	const allUsers = await txn.user.findMany();
-	// 	const generalWorkspace = await txn.workspace.findUnique({ where: { name: 'general' } });
-
-	// 	if (!generalWorkspace || typeof generalWorkspace.id !== 'string') {
-	// 		throw new Error('General workspace not found or has invalid id');
-	// 	}
-
-	// 	const workspaceUserData = allUsers.map((user) => ({
-	// 		userId: user.id,
-	// 		workspaceId: generalWorkspace.id
-	// 	}));
-
-	// 	return await txn.workspaceUser.createManyAndReturn({
-	// 		data: workspaceUserData
-	// 	});
-	// });
-
-	// console.log(`Created workspace users: ${JSON.stringify(workspaceUsers)}`);
+  console.log('Completed database seeding successfully');
 }
 
 seed().finally(async () => {
