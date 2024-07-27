@@ -1,6 +1,6 @@
 import "~/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import localFont from 'next/font/local';
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -11,11 +11,32 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const generalSans = localFont({
+  src: [
+    {
+      path: './assets/GeneralSans-Variable.woff2',
+      style: 'normal',
+    },
+    {
+      path: './assets/GeneralSans-VariableItalic.woff2',
+      style: 'italic',
+    }
+  ],
+  display: 'swap',
+  variable: '--font-general-sans',
+});
+
+const paquito = localFont({
+  src: './assets/Paquito-Variable.woff2',
+  display: 'swap',
+  variable: '--font-paquito',
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${paquito.variable} ${generalSans.variable}`}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
