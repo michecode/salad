@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { createApi } from 'unsplash-js';
 import { type ApiResponse } from 'unsplash-js/dist/helpers/response';
 import { type Basic as BasicPhoto } from 'unsplash-js/dist/methods/photos/types';
+import { blurHashToDataURL } from '~/lib/blurhashDataUrl';
 
 dotenv.config({ path: '.env.local' });
 
@@ -60,6 +61,7 @@ async function seed() {
     await txn.product.deleteMany();
 
     const formattedImages = images.map((unsplashImage) => {
+      const blurHash = blurHashToDataURL(unsplashImage.blur_hash || undefined);
       return {
         description: unsplashImage.description,
         altDescription: unsplashImage.alt_description,
@@ -74,7 +76,7 @@ async function seed() {
         imageUrl: unsplashImage.urls.regular,
         smallImageUrl: unsplashImage.urls.small,
         thumbnailUrl: unsplashImage.urls.thumb,
-        blurHash: unsplashImage.blur_hash,
+        blurHash,
       };
     });
 
