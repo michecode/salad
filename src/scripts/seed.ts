@@ -2,13 +2,14 @@ import dotenv from 'dotenv'; // Load environment variables from .env.local
 import { PrismaClient } from '@prisma/client';
 import { createApi } from 'unsplash-js';
 import { type ApiResponse } from 'unsplash-js/dist/helpers/response';
-import { Medium, Basic } from 'unsplash-js/dist/methods/users/types';
+import { type Basic as BasicUser } from 'unsplash-js/dist/methods/users/types';
+import { type Basic as BasicPhoto } from 'unsplash-js/dist/methods/photos/types';
 
 dotenv.config({ path: '.env.local' });
 
 const UNSPLASH_MUSEUMS = [
   'tepapa', // Museum of New Zealand Te Papa Tongarewa
-  'artchicago', // Art Institute of Chicago
+  // 'artchicago', // Art Institute of Chicago
   // 'bostonpubliclibrary', // Boston Public Library
   // 'libraryofcongress', // Library of Congress
   // 'birminghammuseumstrust', // Birmingham Museums Trust
@@ -26,7 +27,7 @@ async function seed() {
   // ~~~~~~~~~~~~
   // Unsplash fetch
   // ~~~~~~~~~~~~
-  const responsePromises: Promise<ApiResponse<{ results: Basic[], total: number }>>[] = [];
+  const responsePromises: Promise<ApiResponse<{ results: BasicPhoto[], total: number }>>[] = [];
   UNSPLASH_MUSEUMS.forEach((museum) => {
     // For page requests. Also need to minimize requests before I only have 50/hr !
     for (let index = 0; index < PAGES_PER_MUSEUM; index++) {
@@ -38,18 +39,17 @@ async function seed() {
         orderBy: 'popular',
       });
       
-      // @ts-expect-error for now
       responsePromises.push(unsplashRequest);
     }
   });
 
-  let images: Basic[] = [];
+  let images: BasicPhoto[] = [];
   await Promise.all(responsePromises).then((museumResponses) => {
     museumResponses.forEach((museum) => {
       if (!museum) { return console.log('error seeding. museum undefined'); }
-      if (museum.response === undefined) { return console.log('error seeding. response failed'); }
+      if (!museum.response) { return console.log('error seeding. response failed'); }
 
-      images = images.concat(museum.response.results as Basic[]);
+      images = images.concat(museum.response.results);
     });
   }).catch((e) => console.error(e));
   console.log(images, images.length);
@@ -59,14 +59,27 @@ async function seed() {
     await txn.product.deleteMany();
 
     const formattedImages = images.map((unsplashImage) => {
-      
+      return {
+        description: unsplashImage.description,
+        altDescription: unsplashImage.alt_description,
+        museum: unsplashImage.user.name,
+        museumBio: unsplashImage.user.bio,
+        museumLocation: unsplashImage.user.location,
+        museumProfilePicture: unsplashImage.user.profile_image.large,
+        museumProfilePictureThumbnail: unsplashImage.user.profile_image.small,
+        price: Math.floor(Math.random() * 300),
+        rawImageUrl: unsplashImage.urls.raw,
+        fullImageUrl: unsplashImage.urls.full,
+        imageUrl: unsplashImage.urls.regular,
+        smallImageUrl: unsplashImage.urls.small,
+        thumbnailUrl: unsplashImage.urls.thumb,
+        blurHash: unsplashImage.blur_hash,
+      };
     });
 
     return await txn.product.createManyAndReturn({
-      data: [
-
-      ],
-    })
+      data: formattedImages,
+    });
   });
 
 	// const workspaces = await prisma.$transaction(async (txn) => {

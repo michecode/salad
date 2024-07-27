@@ -11,26 +11,25 @@ datasource db {
 }
 
 model Product {
-  id                String      @id @default(cuid())
-  title             String
-  description       String
-  altDescription    String
-  museum            String
-  museumBio         String
-  museumLocation    String
-  price             Float
-  rawImageUrl       String
-  fullImageUrl      String
-  imageUrl          String
-  smallImageUrl     String
-  smallS3ImageUrl   String
-  thumbnailUrl      String
-  artistName        String
-  blurHash          String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                            String      @id @default(cuid())
+  description                   String?
+  altDescription                String?
+  museum                        String
+  museumBio                     String?
+  museumLocation                String?
+  museumProfilePicture          String
+  museumProfilePictureThumbnail String
+  price                         Int
+  rawImageUrl                   String
+  fullImageUrl                  String
+  imageUrl                      String
+  smallImageUrl                 String
+  thumbnailUrl                  String
+  blurHash                      String?
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt
 
-  orderItems    OrderItem[]
+  orderItems                    OrderItem[]
 }
 
 model Order {
