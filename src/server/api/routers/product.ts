@@ -20,6 +20,7 @@ export const productRouter = createTRPCRouter({
   //   });
   // }),
   getProduct: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    ctx.db.product.
     const product = await ctx.db.product.findUnique({
       where: {
         id: input
