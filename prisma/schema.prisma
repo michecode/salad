@@ -30,12 +30,13 @@ model Product {
   updatedAt                     DateTime @updatedAt
 
   orderItems                    OrderItem[]
+  cartItems                     CartItem[]
 }
 
 model Order {
   id          String       @id @default(cuid())
   orderDate   DateTime  @default(now())
-  totalAmount Float
+  totalCost   Int
   recipient   String
   address     String
   items       OrderItem[]
@@ -46,7 +47,24 @@ model OrderItem {
   orderId   String      @unique
   productId String      @unique
   quantity  Int
-  price     Float
+  price     Int
   order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Cart {
+  id        String      @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  items     CartItem[]
+}
+
+model CartItem {
+  id        String      @id @default(cuid())
+  cartId    String
+  productId String
+  quantity  Int
+  price     Int
+  cart      Cart     @relation(fields: [cartId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
 }
