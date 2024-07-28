@@ -2,7 +2,7 @@ import { beforeAll, describe, test, expect } from "vitest";
 import { render, screen } from '@testing-library/react';
 
 // app components
-import { Product } from "@prisma/client";
+import { type Product } from "@prisma/client";
 import { ProductCard } from "../_components/product-card";
 
 describe('Shop Page: Listing Items', () => {

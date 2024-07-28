@@ -1,19 +1,23 @@
+import { Cart, CartItem } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+
+interface CartWithItems extends Cart {
+  items: CartItem[];
+}
 
 export const cartRouter = createTRPCRouter({
   addToCart: publicProcedure
     .input(
       z.object({
-        cartId: z.string(),
-        productId: z.string(),
+        cartId: z.string().cuid().nullable(),
+        productId: z.string().cuid(),
         quantity: z.number().int().positive(),
-        price: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { productId, quantity, price, cartId } = input;
+      const { productId, quantity, cartId } = input;
       try {
         const product = await ctx.db.product.findUnique({
           where: {
@@ -28,18 +32,25 @@ export const cartRouter = createTRPCRouter({
           });
         }
 
-        // Find / create a cart
-        let cart = await ctx.db.cart.findUnique({
-          where: {
-            id: cartId,
-          },
-          include: { items: true },
-        });
-
-        if (!cart) {
+        let cart: CartWithItems | null;
+        if (!cartId) {
           cart = await ctx.db.cart.create({
             data: {},
             include: { items: true },
+          });
+        } else {
+          cart = await ctx.db.cart.findUnique({
+            where: {
+              id: cartId,
+            },
+            include: { items: true },
+          });
+        }
+
+        if (!cart) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Cart not found",
           });
         }
 
@@ -66,7 +77,7 @@ export const cartRouter = createTRPCRouter({
           });
         }
 
-        return { success: true, message: "Item added to cart successfully" };
+        return { success: true, message: "Item added to cart successfully", cart };
       } catch (error) {
         console.error("Error adding item to cart:", error);
         throw new TRPCError({
@@ -81,6 +92,7 @@ export const cartRouter = createTRPCRouter({
       where: {
         id: input,
       },
+      include: { items: true }
     });
     return cart;
   }),
