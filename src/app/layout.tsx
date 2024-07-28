@@ -38,7 +38,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${paquito.variable} ${generalSans.variable}`}>
-      <body className="bg-roseWhite">
+      <body className="bg-roseWhite mx-8">
         <Header/>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

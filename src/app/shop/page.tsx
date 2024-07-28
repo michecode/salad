@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { api, HydrateClient } from "~/trpc/server";
+import { ProductCard } from "../_components/product-card";
 
 export default async function Shop() {
   const products = await api.product.getAllProducts();
@@ -8,20 +9,17 @@ export default async function Shop() {
 
   return (
     <HydrateClient>
-      <main>
-        {products.map((product) => {
-          return (
-            <Image
-              key={product.id}
-              src={product.fullImageUrl}
-              alt={product.altDescription || `art from ${product.museum}`}
-              placeholder={product.blurHash ? 'blur' : undefined}
-              blurDataURL={product.blurHash || undefined}
-              width={500}
-              height={500}
-            />
-          );
-        })}
+      <main className="flex">
+        <div className="w-1/4">
+          future filters
+        </div>
+        <div className="w-3/4 grid grid-cols-3 gap-4">
+          {products.map((product) => {
+            return (
+              <ProductCard product={product} key={product.id}/>
+            );
+          })}
+        </div>
       </main>
     </HydrateClient>
   );
