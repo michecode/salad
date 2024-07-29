@@ -1,5 +1,7 @@
 "use client";
+import Link from "next/link";
 import { CartItem } from "../_components/cart-item";
+import { Button } from "../_components/ui/button";
 import { useCart } from "../hooks/useCart";
 
 export default function Cart() {
@@ -28,11 +30,13 @@ export default function Cart() {
   return (
     <main>
       <div>
+        <Button asChild>
+          <Link href={`/checkout/${cart.id}`}>Checkout</Link>
+        </Button>
         {cart.items.map((item) => (
           <CartItem
             key={`cartitem-${item.id}`}
             item={item}
-            productId={item.productId}
             cartId={cart.id}
           />
         ))}
