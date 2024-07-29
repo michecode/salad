@@ -5,7 +5,7 @@ interface CartWithItems extends Cart {
   items: CartItem[];
 }
 
-export const addToCart = async ({ cartId, productId }: { cartId: string, productId: string }) => {
+export const addToCart = async ({ cartId, productId }: { cartId: string | null, productId: string }) => {
   try {
     const product = await db.product.findUnique({
       where: {

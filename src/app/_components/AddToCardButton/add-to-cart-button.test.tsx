@@ -1,23 +1,26 @@
-import { beforeAll, describe, test, expect, vi, beforeEach } from "vitest";
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { fireEvent, screen, waitFor, render } from '@testing-library/react';
 import { Cart, CartItem } from "@prisma/client";
 
 import { AddToCartButton } from "./add-to-cart-button";
-import { renderWithProviders, trpcMsw } from "../../../../setupTests";
-import { setupServer } from "msw/node";
+import { addToCartAction } from "~/lib/actions";
 
 interface CartWithItems extends Cart {
   items: CartItem[]
 }
 
+vi.mock('~/lib/actions', () => ({
+  addToCartAction: vi.fn(),
+}))
+
+vi.mock('react-dom', () => ({
+  ...vi.importActual('react-dom'),
+  useFormStatus: vi.fn().mockReturnValue({
+    pending: false,
+  }),
+}));
+
 describe('Add to Cart Button', () => {
-  console.log(trpcMsw);
-  // const server = setupServer(
-  //   trpcMsw.product.getProduct.query(
-
-  //   )
-  // )
-
   const mockCartId = 'test';
   const mockProductId = 'test';
   const mockCartItem: CartItem = {
@@ -34,42 +37,19 @@ describe('Add to Cart Button', () => {
     items: [ mockCartItem ],
   }
 
+  beforeEach(() => {
+    vi.clearAllMocks();
+    localStorage.clear();
+  });
+
   test('Button Renders', () => {
-    renderWithProviders(<AddToCartButton productId={mockProductId} />);
+    render(<AddToCartButton productId={mockProductId} />);
     const cartButton = screen.getByRole('button');
     expect(cartButton).toBeInTheDocument();
   });
 
   test('loading spinner when clicked', async () => {
-
-  });
-
-  test.todo('Adds to non-existant cart', async () => {
-    mockTrpcClient.cart.addToCart.mockResolvedValue({ success: true });
-
-    render(<AddToCartButton productId={mockProductId} />);
-    fireEvent.click(screen.getByRole('button'));
-
-    await waitFor(() => {
-      expect(mockTrpcClient.cart.addToCart).toHaveBeenCalledWith(null, mockProductId, 1);
-    })
-  });
-
-  test.todo('Adds to existing cart', async () => {
-    mockTrpcClient.cart.addToCart.mockResolvedValue({ success: true, message: 'Item added to cart', cart: mockCart });
-
-    render(<AddToCartButton productId={mockProductId} />);
-    fireEvent.click(screen.getByRole('button'));
-
-    await waitFor(() => {
-      expect(mockTrpcClient.cart.addToCart).toHaveBeenCalledWith(mockCartId, mockProductId, 1);
-    })
-  })
-
-  test.todo('Show a loading spinner when adding item', async () => {
-    mockTrpcClient.cart.addToCart.mockImplementation(() =>
-      new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000))
-    );
+    vi.mocked(addToCartAction).mockImplementation(async () => new Promise(resolve => setTimeout(resolve, 200)));
 
     render(<AddToCartButton productId={mockProductId} />);
     fireEvent.click(screen.getByRole('button'));
@@ -81,10 +61,38 @@ describe('Add to Cart Button', () => {
     });
   });
 
-  test.todo('Handles non-existant product', async () => {
-    mockTrpcClient.cart.addToCart.mockRejectedValue(new Error('Product not found'));
+  test('Adds to non-existant cart and sets cart id', async () => {
+    vi.mocked(addToCartAction).mockImplementation(async () => new Promise((resolve) => setTimeout(() => {
+      resolve({ succes: true, message: 'Item added to cart successfully', cart: mockCart })
+    }, 200)));
+    expect(localStorage.getItem('salad-cart-id')).toBeNull();
 
-    render(<AddToCartButton productId="i_dont_exist" />)
+    render(<AddToCartButton productId={mockProductId} />);
+    fireEvent.click(screen.getByRole('button'));
+
+    await waitFor(() => {
+      expect(addToCartAction).toHaveBeenCalledWith({ productId: mockProductId, cartId: null });
+      expect(localStorage.getItem('salad-cart-id')).toEqual(mockCart.id);
+    })
+  });
+
+  test('Adds to existing cart', async () => {
+    localStorage.setItem('salad-cart-id', mockCart.id);
+
+    render(<AddToCartButton productId={mockProductId} />);
+    fireEvent.click(screen.getByRole('button'));
+
+    await waitFor(() => {
+      expect(addToCartAction).toHaveBeenCalledWith({ productId: mockProductId, cartId: 'salad-cart-id' });
+    })
+  })
+
+  test('fails to add item', async () => {
+    vi.mocked(addToCartAction).mockImplementation(async () => new Promise((resolve) => setTimeout(() => {
+      resolve({ success: false, message: 'Failed to add item' });
+    }, 100)));
+
+    render(<AddToCartButton productId={mockProductId} />)
     fireEvent.click(screen.getByRole('button'));
 
     await waitFor(() => {
