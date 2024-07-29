@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="flex w-full flex-col space-y-2 bg-background border p-4">
+    <div className="flex w-full flex-col space-y-2 bg-background border p-4 shadow-md">
       <div className="relative mx-auto h-[250px] w-5/6">
         <Link href={`/item/${product.id}`}>
           <Image

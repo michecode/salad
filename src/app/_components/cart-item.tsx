@@ -53,7 +53,7 @@ export function CartItem({ cartId, item, refresh }: { cartId: string, item: Cart
   }
 
   return (
-    <div className="flex space-x-2 border p-4 rounded-xl justify-between">
+    <div className="flex space-x-2 border p-4 rounded-xl justify-between shadow-md">
       <div className="flex space-x-2">
         <img src={product.smallImageUrl} className="w-[100px] h-[100px] object-contain border p-1 rounded-lg"/>
         <div className="flex flex-col space-y-2">
