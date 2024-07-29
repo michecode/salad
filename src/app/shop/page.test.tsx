@@ -15,6 +15,7 @@ describe('Shop Page: Listing Items', () => {
     description: "Lake Tennyson, 1860s, New Zealand, by Honorable James Richmond.",
     altDescription: 'a painting of a forest with trees and animals',
     museum: 'Museum of New Zealand Te Papa Tongarewa',
+    museumId: 'tepapa',
     museumBio: null,
     museumLocation: 'Wellington, New Zealand',
     museumProfilePicture: 'https://images.unsplash.com/profile-1683214917800-95fd80936f9eimage?ixlib=rb-4.0.3&crop=faces&fit=crop&w=128&h=128',

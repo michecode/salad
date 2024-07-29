@@ -67,7 +67,8 @@
     "typescript": "^5.5.3",
     "unsplash-js": "^7.0.19",
     "vitest": "^2.0.4",
-    "vitest-localstorage-mock": "^0.1.2"
+    "vitest-localstorage-mock": "^0.1.2",
+    "vitest-mock-extended": "^2.0.0"
   },
   "ct3aMetadata": {
     "initVersion": "7.36.2"

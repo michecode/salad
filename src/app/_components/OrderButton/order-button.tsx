@@ -23,7 +23,7 @@ interface OrderResponse {
   error?: unknown;
 }
 
-export const OrderButton = ({ cartId, recipient, address }: { cartId: string, recipient: string, address: string }) => {
+export const OrderButton = ({ cartId }: { cartId: string }) => {
   const [ _, setCartId ] = useCartIdContext();
   const [ isLoading, setIsLoading ] = useState(false);
   const [ orderResponse, setOrderResponse ] = useState<OrderResponse | null>(null);
@@ -31,13 +31,17 @@ export const OrderButton = ({ cartId, recipient, address }: { cartId: string, re
 
   const handleAdd = async () => {
     setIsLoading(true);
-    const response = await placeOrderAction({ cartId, recipient, address });
+    const response = await placeOrderAction({ cartId, recipient: 'maddy', address: 'maddyhouse' });
+    console.log(response);
     if (response.success) {
       setCartId(null);
     }
+    console.log('setting response', response);
     setOrderResponse(response);
+    console.log('response set');
     setIsOpen(true);
     setIsLoading(false);
+    console.log(orderResponse);
   };
 
   const toggleOpen = () => {
@@ -52,7 +56,7 @@ export const OrderButton = ({ cartId, recipient, address }: { cartId: string, re
       </Button>
       <AlertDialog open={isOpen} onOpenChange={toggleOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader>
+          <AlertDialogHeader data-testid="alert-dialog-header">
             <AlertDialogTitle>Order {orderResponse?.success ? 'Placed' : 'Failed'}</AlertDialogTitle>
           </AlertDialogHeader>
           {orderResponse?.success ? <AlertDialogDescription>

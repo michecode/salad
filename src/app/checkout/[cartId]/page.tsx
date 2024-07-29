@@ -21,7 +21,7 @@ export default async function Checkout({ params }: { params: { cartId: string } 
         </div>
         <div className="flex flex-col space-x-4">
           <p className="font-bold text-4xl">Subtotal: ${subtotal}</p>
-          <OrderButton cartId={params.cartId} recipient="Maddy" address="Maddyhouse"/>
+          <OrderButton cartId={params.cartId} />
         </div>
       </div>
     </main>
