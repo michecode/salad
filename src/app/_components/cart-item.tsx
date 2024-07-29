@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { TrashIcon, MinusIcon, PlusIcon } from "lucide-react";
 import { addToCartAction, removeAllItemsByProductFromCartAction, removeItemFromCartAction } from "~/lib/actions";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export function CartItem({ cartId, productId, item }: { cartId: string, productId: string, item: CartItem }) {
   const { data: product, isLoading } = useProduct({ productId });
@@ -14,7 +15,7 @@ export function CartItem({ cartId, productId, item }: { cartId: string, productI
     const response = await addToCartAction({ productId, cartId });
     if (response.success) {
       queryClient.invalidateQueries({ queryKey: [ 'cart', cartId ] });
-      console.log('yay');
+      toast(response.message);
     }
   };
 
@@ -22,7 +23,7 @@ export function CartItem({ cartId, productId, item }: { cartId: string, productI
     const response = await removeItemFromCartAction({ itemId: item.id });
     if (response.success) {
       queryClient.invalidateQueries({ queryKey: [ 'cart', cartId ] });
-      console.log('yay');
+      toast(response.message);
     }
   };
 
@@ -30,7 +31,7 @@ export function CartItem({ cartId, productId, item }: { cartId: string, productI
     const response = await removeAllItemsByProductFromCartAction({ productId, cartId });
     if (response.success) {
       queryClient.invalidateQueries({ queryKey: [ 'cart', cartId ] });
-      console.log('yay');
+      toast(response.message);
     }
   };
 
