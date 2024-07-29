@@ -3,7 +3,6 @@ import "~/styles/globals.css";
 import localFont from 'next/font/local';
 import { type Metadata } from "next";
 
-import { TRPCReactProvider } from "~/trpc/react";
 import { Header } from "./_components/header";
 
 export const metadata: Metadata = {
@@ -40,7 +39,7 @@ export default function RootLayout({
     <html lang="en" className={`${paquito.variable} ${generalSans.variable}`}>
       <body className="bg-roseWhite mx-8">
         <Header/>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        {children}
       </body>
     </html>
   );
