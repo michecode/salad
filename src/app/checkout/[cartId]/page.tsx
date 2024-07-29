@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getCart } from "~/lib/cart";
 import { CheckoutItem } from "../../_components/checkout-item";
-import { Button } from "~/app/_components/ui/button";
+import { OrderButton } from "~/app/_components/OrderButton/order-button";
 
 export default async function Checkout({ params }: { params: { cartId: string } }) {
   const cart = await getCart({ cartId: params.cartId });
@@ -19,9 +19,7 @@ export default async function Checkout({ params }: { params: { cartId: string } 
       </div>
       <div>
         <p>Subtotal: ${subtotal}</p>
-        <Button>
-          Place Order
-        </Button>
+        <OrderButton cartId={params.cartId} recipient="Maddy" address="Maddyhouse"/>
       </div>
     </main>
   );
