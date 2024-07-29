@@ -28,8 +28,15 @@ export default function Cart() {
   return (
     <main>
       <div>
-        {cart.items.map((item) => (<CartItem item={item} productId={item.productId} cartId={cart.id} />))}
+        {cart.items.map((item) => (
+          <CartItem
+            key={`cartitem-${item.id}`}
+            item={item}
+            productId={item.productId}
+            cartId={cart.id}
+          />
+        ))}
       </div>
     </main>
   );
-};
+}
