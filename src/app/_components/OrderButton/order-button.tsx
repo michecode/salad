@@ -34,6 +34,7 @@ export const OrderButton = ({ cartId, recipient, address }: { cartId: string, re
     const response = await placeOrderAction({ cartId, recipient, address });
     if (response.success) {
       setCartId(null);
+      console.log(response.order);
     }
     setOrderResponse(response);
     setIsOpen(true);
@@ -55,12 +56,17 @@ export const OrderButton = ({ cartId, recipient, address }: { cartId: string, re
           <AlertDialogHeader>
             <AlertDialogTitle>Order {orderResponse?.success ? 'Placed' : 'Failed'}</AlertDialogTitle>
           </AlertDialogHeader>
-          <AlertDialogDescription>
+          {orderResponse?.success ? <AlertDialogDescription>
             Thanks! We&apos;re getting right to work on shipping your order.
             <br/>
+            Subtotal: ${orderResponse?.order?.totalCost}
             <br/>
             Order ID: {orderResponse?.order?.id}
           </AlertDialogDescription>
+            : <AlertDialogDescription>
+              We we&apos;re unable to place your order.
+          </AlertDialogDescription>
+          }
           <AlertDialogFooter>
             <Link href="/">
               <AlertDialogAction>Return Home</AlertDialogAction>
