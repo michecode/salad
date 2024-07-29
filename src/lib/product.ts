@@ -15,13 +15,16 @@ export const getProduct = async ({
   return product;
 };
 
-export const totalProductPages = async () => {
-  const totalProducts = await db.product.count();
+export const totalProductPages = async (museum: string | undefined) => {
+  const totalProducts = await db.product.count({
+    where: {
+      museumId: museum,
+    }
+  });
   return Math.ceil(totalProducts / PAGE_SIZE);
 };
 
 export const getAllProducts = async (page: number = 1, museum: string | undefined) => {
-  console.log(museum);
   const products = await db.product.findMany({
     where: {
       museumId: museum,
@@ -32,7 +35,6 @@ export const getAllProducts = async (page: number = 1, museum: string | undefine
       id: "asc",
     },
   });
-  console.log(products);
 
   return products ?? null;
 };

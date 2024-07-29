@@ -16,14 +16,13 @@ export default async function Shop({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const totalPages = await totalProductPages();
   const page = Number(searchParams.page) || 1;
   const museumParam = searchParams.museum as string | undefined;
-  console.log({museumParam});
   const products = await getAllProducts(page, museumParam);
+  const totalPages = await totalProductPages(museumParam);
 
   return (
-    <main className="flex mb-10">
+    <main className="flex mb-10 space-x-2">
       <div className="w-1/4">
         <Filters />
       </div>
