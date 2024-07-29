@@ -28,7 +28,7 @@ export default function Cart() {
   return (
     <main>
       <div>
-        {cart.items.map((item) => (<CartItem item={item} productId={item.productId} />))}
+        {cart.items.map((item) => (<CartItem item={item} productId={item.productId} cartId={cart.id} />))}
       </div>
     </main>
   );

@@ -5,7 +5,13 @@ interface CartWithItems extends Cart {
   items: CartItem[];
 }
 
-export const addToCart = async ({ cartId, productId }: { cartId: string | null, productId: string }) => {
+export const addToCart = async ({
+  cartId,
+  productId,
+}: {
+  cartId: string | null;
+  productId: string;
+}) => {
   try {
     const product = await db.product.findUnique({
       where: {
@@ -14,7 +20,7 @@ export const addToCart = async ({ cartId, productId }: { cartId: string | null, 
     });
 
     if (!product) {
-      return { success: false, message: 'product not found' };
+      return { success: false, message: "product not found" };
     }
 
     let cart: CartWithItems | null;
@@ -33,7 +39,7 @@ export const addToCart = async ({ cartId, productId }: { cartId: string | null, 
     }
 
     if (!cart) {
-      return { success: false, message: 'cart not found' };
+      return { success: false, message: "cart not found" };
     }
 
     // Check if the item already exists in the cart
@@ -62,15 +68,69 @@ export const addToCart = async ({ cartId, productId }: { cartId: string | null, 
     return { success: true, message: "Item added to cart successfully", cart };
   } catch (error) {
     console.error("Error adding item to cart:", error);
-    return { success: false, message: 'Failed to add item to cart' };
+    return { success: false, message: "Failed to add item to cart" };
   }
-}
+};
+
+export const removeItemFromCart = async ({ itemId }: { itemId: string }) => {
+  try {
+    const cartItem = await db.cartItem.findUnique({
+      where: {
+        id: itemId,
+      }
+    });
+
+    if (!cartItem) {
+      return { success: false, message: 'Cart item not found' }
+    }
+
+    if (cartItem?.quantity === 1) {
+      await db.cartItem.delete({
+        where: {
+          id: itemId,
+        },
+      });
+    } else {
+      await db.cartItem.update({
+        where: {
+          id: itemId
+        },
+        data: {
+          quantity: cartItem.quantity - 1,
+        }
+      })
+    }
+    return { success: true, message: "Removed item from cart" };
+  } catch (e) {
+    return { success: false, message: "Failed to remove item from cart" };
+  }
+};
+
+export const removeAllItemsByProductFromCart = async ({
+  productId,
+  cartId,
+}: {
+  productId: string;
+  cartId: string;
+}) => {
+  try {
+    await db.cartItem.deleteMany({
+      where: {
+        cartId,
+        productId,
+      },
+    });
+    return { success: true, message: "Removed item from cart" };
+  } catch (e) {
+    return { success: false, message: "Failed to remove item from cart" };
+  }
+};
 
 export const getCart = async ({ cartId }: { cartId: string | null }) => {
   return await db.cart.findUnique({
     where: {
       id: cartId ?? undefined,
     },
-    include: { items: true }
+    include: { items: true },
   });
 };
