@@ -1,21 +1,10 @@
-"use client";
 import Link from "next/link";
-import { CartItem } from "../_components/cart-item";
-import { Button } from "../_components/ui/button";
-import { useCart } from "../hooks/useCart";
+import { CartItem } from "../../_components/cart-item";
+import { Button } from "../../_components/ui/button";
+import { getCart } from "~/lib/cart";
 
-export default function Cart() {
-  const { data: cart, isLoading } = useCart();
-
-  if (isLoading) {
-    return (
-      <main>
-        <div>
-          <p>laoding..</p>
-        </div>
-      </main>
-    );
-  }
+export default async function Cart({ params }: { params: { cartId: string } }) {
+  const cart = await getCart({ cartId: params.cartId });
 
   if (!cart) {
     return (

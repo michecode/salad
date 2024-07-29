@@ -11,10 +11,10 @@ import {
 } from "../ui/alert-dialog"
 import { Loader2 } from 'lucide-react';
 import { placeOrderAction } from "~/lib/actions";
-import { toast } from "sonner";
 import { useState } from "react";
 import { type Order } from "@prisma/client";
 import Link from "next/link";
+import { useCartIdContext } from "~/app/contexts/cart-id";
 
 interface OrderResponse {
   success: boolean;
@@ -24,6 +24,7 @@ interface OrderResponse {
 }
 
 export const OrderButton = ({ cartId, recipient, address }: { cartId: string, recipient: string, address: string }) => {
+  const [ _, setCartId ] = useCartIdContext();
   const [ isLoading, setIsLoading ] = useState(false);
   const [ orderResponse, setOrderResponse ] = useState<OrderResponse | null>(null);
   const [ isOpen, setIsOpen ] = useState(false);
@@ -32,8 +33,7 @@ export const OrderButton = ({ cartId, recipient, address }: { cartId: string, re
     setIsLoading(true);
     const response = await placeOrderAction({ cartId, recipient, address });
     if (response.success) {
-      localStorage.removeItem('salad-cart-id');
-      toast(response.message);
+      setCartId(null);
     }
     setOrderResponse(response);
     setIsOpen(true);

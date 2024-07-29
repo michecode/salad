@@ -8,6 +8,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { Toaster } from './_components/ui/sonner';
+import { CartIdProvider } from './contexts/cart-id';
 
 function makeQueryClient() {
   return new QueryClient({
@@ -42,8 +43,10 @@ export default function Providers({ children }: { children: React.ReactNode}) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      {children}
+      <CartIdProvider>
+        <Toaster />
+        {children}
+      </CartIdProvider>
     </QueryClientProvider>
   )
 };

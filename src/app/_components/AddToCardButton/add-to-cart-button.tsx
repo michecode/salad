@@ -4,16 +4,19 @@ import { Loader2 } from 'lucide-react';
 import { addToCartAction } from "~/lib/actions";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useCartIdContext } from "~/app/contexts/cart-id";
 
 export const AddToCartButton = ({ productId }: { productId: string }) => {
   const [ isLoading, setIsLoading ] = useState(false);
-  const cartId = localStorage.getItem('salad-cart-id');
+  const [ cartId, setCartId ] = useCartIdContext();
+  console.log({ buttonCartId: cartId });
 
   const handleAdd = async () => {
     setIsLoading(true);
     const response = await addToCartAction({ productId, cartId });
+    console.log({id: response.cart?.id});
     if (response.success && response.cart?.id) {
-      localStorage.setItem('salad-cart-id', response.cart?.id);
+      setCartId(response.cart.id);
       toast(response.message);
     }
     setIsLoading(false);
