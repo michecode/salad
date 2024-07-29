@@ -16,6 +16,8 @@ export const AddToCartButton = ({ productId }: { productId: string }) => {
     if (response.success && response.cart?.id) {
       setCartId(response.cart.id);
       toast(response.message);
+    } else {
+      toast(response.message);
     }
     setIsLoading(false);
   };

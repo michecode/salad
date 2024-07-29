@@ -20,7 +20,7 @@ export const addToCart = async ({
     });
 
     if (!product) {
-      return { success: false, message: "product not found" };
+      return { success: false, message: "Product Not Found" };
     }
 
     let cart: CartWithItems | null;
@@ -39,7 +39,7 @@ export const addToCart = async ({
     }
 
     if (!cart) {
-      return { success: false, message: "cart not found" };
+      return { success: false, message: "Cart Not Found" };
     }
 
     // Check if the item already exists in the cart
@@ -65,10 +65,10 @@ export const addToCart = async ({
       });
     }
 
-    return { success: true, message: "Item added to cart successfully", cart };
+    return { success: true, message: "Item Added to Cart Successfully", cart };
   } catch (error) {
     console.error("Error adding item to cart:", error);
-    return { success: false, message: "Failed to add item to cart" };
+    return { success: false, message: "Failed to Add Item to Cart" };
   }
 };
 
@@ -81,7 +81,7 @@ export const removeItemFromCart = async ({ itemId }: { itemId: string }) => {
     });
 
     if (!cartItem) {
-      return { success: false, message: 'Cart item not found' }
+      return { success: false, message: 'Cart Item Not Found' }
     }
 
     if (cartItem?.quantity === 1) {
@@ -100,9 +100,9 @@ export const removeItemFromCart = async ({ itemId }: { itemId: string }) => {
         }
       })
     }
-    return { success: true, message: "Removed item from cart" };
+    return { success: true, message: "Removed Item From Cart" };
   } catch (e) {
-    return { success: false, message: "Failed to remove item from cart" };
+    return { success: false, message: "Failed to Remove Item From Cart" };
   }
 };
 
