@@ -34,7 +34,6 @@ export const OrderButton = ({ cartId, recipient, address }: { cartId: string, re
     const response = await placeOrderAction({ cartId, recipient, address });
     if (response.success) {
       setCartId(null);
-      console.log(response.order);
     }
     setOrderResponse(response);
     setIsOpen(true);
