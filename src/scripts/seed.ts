@@ -58,6 +58,10 @@ async function seed() {
 
   console.log('starting data insert');
   const products = await prisma.$transaction(async (txn) => {
+    await txn.cartItem.deleteMany();
+    await txn.orderItem.deleteMany();
+    await txn.order.deleteMany();
+    await txn.cart.deleteMany();
     await txn.product.deleteMany();
 
     const formattedImages = images.map((unsplashImage) => {
@@ -65,6 +69,7 @@ async function seed() {
       return {
         description: unsplashImage.description,
         altDescription: unsplashImage.alt_description,
+        museumId: unsplashImage.user.username,
         museum: unsplashImage.user.name,
         museumBio: unsplashImage.user.bio,
         museumLocation: unsplashImage.user.location,

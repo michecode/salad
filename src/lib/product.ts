@@ -20,14 +20,19 @@ export const totalProductPages = async () => {
   return Math.ceil(totalProducts / PAGE_SIZE);
 };
 
-export const getAllProducts = async (page: number = 1) => {
+export const getAllProducts = async (page: number = 1, museum: string | undefined) => {
+  console.log(museum);
   const products = await db.product.findMany({
+    where: {
+      museumId: museum,
+    },
     skip: (page - 1) * PAGE_SIZE,
     take: PAGE_SIZE,
     orderBy: {
       id: "asc",
     },
   });
+  console.log(products);
 
   return products ?? null;
 };

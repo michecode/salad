@@ -9,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../_components/ui/pagination";
+import { Filters } from "../_components/filters";
 
 export default async function Shop({
   searchParams,
@@ -17,11 +18,15 @@ export default async function Shop({
 }) {
   const totalPages = await totalProductPages();
   const page = Number(searchParams.page) || 1;
-  const products = await getAllProducts(page);
+  const museumParam = searchParams.museum as string | undefined;
+  console.log({museumParam});
+  const products = await getAllProducts(page, museumParam);
 
   return (
     <main className="flex mb-10">
-      <div className="w-1/4">future filters</div>
+      <div className="w-1/4">
+        <Filters />
+      </div>
       <div className="w-3/4 space-y-4">
         <div className="grid grid-cols-3 gap-4">
           {products.map((product) => {

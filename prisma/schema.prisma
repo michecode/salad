@@ -15,6 +15,7 @@ model Product {
   description                   String?
   altDescription                String?
   museum                        String
+  museumId                      String
   museumBio                     String?
   museumLocation                String?
   museumProfilePicture          String
