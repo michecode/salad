@@ -13,10 +13,15 @@ export async function CheckoutItem({ item }: { item: CartItem }) {
   }
 
   return (
-    <div className="flex space-x-2">
-      <img src={product.thumbnailUrl}/>
-      <p>x{item.quantity}</p>
-      <p>${item.price}</p>
+    <div className="flex space-x-2 border p-4 rounded-xl justify-between">
+      <div className="flex space-x-2">
+        <img src={product.smallImageUrl} className="w-[100px] h-[100px] object-contain border p-1 rounded-lg"/>
+        <div className="flex flex-col space-y-2">
+          <p className="font-bold text-xl">${item.quantity * item.price}</p>
+          <p>Quantity: {item.quantity}</p>
+          {item.quantity > 1 && <p>${item.price}</p>}
+        </div>
+      </div>
     </div>
   );
 };
