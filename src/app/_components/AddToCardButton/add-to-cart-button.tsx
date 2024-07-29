@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { Button } from "../ui/button";
 import { Loader2 } from 'lucide-react';
 import { addToCartAction } from "~/lib/actions";

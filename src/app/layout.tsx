@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { type Metadata } from "next";
 
 import { Header } from "./_components/header";
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: "Salad",
@@ -37,10 +38,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${paquito.variable} ${generalSans.variable}`}>
-      <body className="bg-roseWhite mx-8">
-        <Header/>
-        {children}
-      </body>
+        <body className="bg-roseWhite mx-8">
+          <Providers>
+            <Header/>
+            {children}
+          </Providers>
+        </body>
     </html>
   );
 }

@@ -1,9 +1,9 @@
 import { db } from "~/server/db";
 
-export const getProduct = async ({ productId }: { productId: string }) => {
+export const getProduct = async ({ productId }: { productId: string | null }) => {
   const product = await db.product.findUnique({
     where: {
-      id: productId
+      id: productId ?? undefined,
     }
   });
   return product;

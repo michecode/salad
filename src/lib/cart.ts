@@ -66,10 +66,10 @@ export const addToCart = async ({ cartId, productId }: { cartId: string | null, 
   }
 }
 
-export const getCart = async ({ cartId }: { cartId: string }) => {
+export const getCart = async ({ cartId }: { cartId: string | null }) => {
   return await db.cart.findUnique({
     where: {
-      id: cartId,
+      id: cartId ?? undefined,
     },
     include: { items: true }
   });

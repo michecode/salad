@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Product {
-  id                            String      @id @default(cuid())
+  id                            String      @unique @id @default(cuid())
   description                   String?
   altDescription                String?
   museum                        String
@@ -34,7 +34,7 @@ model Product {
 }
 
 model Order {
-  id          String       @id @default(cuid())
+  id          String       @unique @id @default(cuid())
   orderDate   DateTime  @default(now())
   totalCost   Int
   recipient   String
@@ -43,9 +43,9 @@ model Order {
 }
 
 model OrderItem {
-  id        String      @id @default(cuid())
-  orderId   String      @unique
-  productId String      @unique
+  id        String      @unique @id @default(cuid())
+  orderId   String      
+  productId String      
   quantity  Int
   price     Int
   order     Order    @relation(fields: [orderId], references: [id])
@@ -53,14 +53,14 @@ model OrderItem {
 }
 
 model Cart {
-  id        String      @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String      @unique @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   items     CartItem[]
 }
 
 model CartItem {
-  id        String      @id @default(cuid())
+  id        String      @unique @id @default(cuid())
   cartId    String
   productId String
   quantity  Int
