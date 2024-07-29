@@ -21,7 +21,7 @@ export const AddToCartButton = ({ productId }: { productId: string }) => {
   };
 
   return (
-    <Button onClick={handleAdd} disabled={isLoading}>
+    <Button onClick={handleAdd} disabled={isLoading} size="sm">
       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" data-testid="loading-spinner"/>}
       Add to Cart
     </Button>
