@@ -33,6 +33,8 @@ yarn test
 #### Troubleshooting
 If you are getting "Cart Not Found" you most likely re-seeded the database in between checkouts. Delete the `salad-cart-id` from your localStorage and refresh, this will create a fresh cart for you to use.
 
+Running the integration tests affects the database. Re-seed the database if you are going to run the app again.
+
 ## How It Works
 ![Untitled-2024-07-27-0013](https://github.com/user-attachments/assets/c92bd946-6454-4692-8d02-12c355245b26)
 
