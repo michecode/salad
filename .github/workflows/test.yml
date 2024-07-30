@@ -31,7 +31,7 @@ jobs:
           envkey_UNSPLASH_APPLICATION_ID: ${{ secrets.UNSPLASH_APPLICATION_ID }}
           envkey_UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
           envkey_UNSPLASH_SECRET_KEY: ${{ secrets.UNSPLASH_SECRET_KEY }}
-          directory: <directory_name>
+          directory: /
           file_name: .env
           fail_on_empty: false
           sort_keys: false
