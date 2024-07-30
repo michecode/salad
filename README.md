@@ -1,9 +1,13 @@
 #  Salad
 
+<img width="1440" alt="Screenshot 2024-07-30 at 12 41 04 AM" src="https://github.com/user-attachments/assets/56a0821d-aec3-4d38-ae05-6f39eec8b5c5">
+
+
 ## Overview
 This application is a simple e-commerce app that "sells" archival artwork from museums.
 
 Products can be explored through pagination and simple filtering. The application has a shopping cart managed through a database and localStorage that allows for guest checkouts that persists through user sessions. Additionally, you can place your order and view the cart summary that includes prices and quantities of each item in your cart.
+
 
 ## How To Run The App
 
