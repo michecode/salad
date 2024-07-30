@@ -9,9 +9,19 @@ Products can be explored through pagination and simple filtering. The applicatio
 
 Follow the `.env.sample` and fill `.env.local` with secrets I've given or your own API keys
 
+1. Use node version defined by running `nvm use`
+2. Install packages with `yarn`
+3. Create `.env.local.` file with the keys shown in `.env.sample`. Supply the values provided or provide your own Unsplash developer API keys.
+4. Apply database migrations with `yarn db:migrate:dev`
+5. Generate Prisma client with `yarn db:generate`
+6. Seed database with data from Unsplash by running `yarn seed`
+7. Ready to boot with `yarn dev`!
+
+
 ```
 nvm use
 yarn
+(create env file before using database commands)
 yarn db:migrate:dev
 yarn db:generate
 yarn seed
@@ -19,7 +29,9 @@ yarn seed
 yarn dev
 yarn test
 ```
-If you re-seed the database or run integration tests make sure to delete `salad-cart-id` from your localStorage to restart your cart
+
+#### Troubleshooting
+If you are getting "Cart Not Found" you most likely re-seeded the database in between checkouts. Delete the `salad-cart-id` from your localStorage and refresh, this will create a fresh cart for you to use.
 
 ## How It Works
 ![Untitled-2024-07-27-0013](https://github.com/user-attachments/assets/c92bd946-6454-4692-8d02-12c355245b26)
