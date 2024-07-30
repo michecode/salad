@@ -26,3 +26,8 @@ jobs:
 
       - name: Run tests
         run: yarn test
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          UNSPLASH_APPLICATION_ID: ${{ secrets.UNSPLASH_APPLICATION_ID }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          UNSPLASH_SECRET_KEY: ${{ secrets.UNSPLASH_SECRET_KEY }}
