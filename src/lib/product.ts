@@ -25,6 +25,7 @@ export const totalProductPages = async (museum: string | undefined) => {
 };
 
 export const getAllProducts = async (page: number = 1, museum: string | undefined) => {
+  console.log(db);
   const products = await db.product.findMany({
     where: {
       museumId: museum,
