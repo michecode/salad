@@ -33,6 +33,7 @@ describe('product prisma', () => {
 
     // Seed the database
     await seed();
+    console.log('finished seed script');
 
     // Dynamically import getAllProducts after unmocking
     const productModule = await import('./product');
@@ -43,7 +44,6 @@ describe('product prisma', () => {
 
   it('should get a list of products', async () => {
     const products = await getAllProducts(1, undefined);
-    console.log(products);
     expect(products.length).toBeGreaterThan(1);
   });
 
