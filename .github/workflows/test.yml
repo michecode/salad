@@ -24,10 +24,13 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Create .env.local file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env.local
+          echo "UNSPLASH_APPLICATION_ID=${{ secrets.UNSPLASH_APPLICATION_ID }}" >> .env.local
+          echo "UNSPLASH_ACCESS_KEY=${{ secrets.UNSPLASH_ACCESS_KEY }}" >> .env.local
+          echo "UNSPLASH_SECRET_KEY=${{ secrets.UNSPLASH_SECRET_KEY }}" >> .env.local
+          # Add more environment variables as needed
+
       - name: Run tests
         run: yarn test
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          UNSPLASH_APPLICATION_ID: ${{ secrets.UNSPLASH_APPLICATION_ID }}
-          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-          UNSPLASH_SECRET_KEY: ${{ secrets.UNSPLASH_SECRET_KEY }}
