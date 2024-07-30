@@ -86,7 +86,7 @@ export async function seed() {
           museumLocation: unsplashImage.user.location,
           museumProfilePicture: unsplashImage.user.profile_image.large,
           museumProfilePictureThumbnail: unsplashImage.user.profile_image.small,
-          price: Math.floor(Math.random() * 300),
+          price: Math.ceil(Math.random() * 300),
           rawImageUrl: unsplashImage.urls.raw,
           fullImageUrl: unsplashImage.urls.full,
           imageUrl: unsplashImage.urls.regular,
