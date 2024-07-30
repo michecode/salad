@@ -1,15 +1,23 @@
+import { Product } from "@prisma/client";
 import { db } from "~/server/db";
 
 const PAGE_SIZE = 51; // Divisible by 3 since theres 3 cols
 
+// @DEV: Mostly just for testing
+export const createProduct = async (product: Product) => {
+  await db.product.create({
+    data: product,
+  });
+};
+
 export const getProduct = async ({
   productId,
 }: {
-  productId: string | null;
+  productId: string;
 }) => {
   const product = await db.product.findUnique({
     where: {
-      id: productId ?? undefined,
+      id: productId,
     },
   });
   return product;
@@ -25,7 +33,6 @@ export const totalProductPages = async (museum: string | undefined) => {
 };
 
 export const getAllProducts = async (page: number = 1, museum: string | undefined) => {
-  console.log(db);
   const products = await db.product.findMany({
     where: {
       museumId: museum,
