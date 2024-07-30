@@ -32,7 +32,7 @@ jobs:
           envkey_UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
           envkey_UNSPLASH_SECRET_KEY: ${{ secrets.UNSPLASH_SECRET_KEY }}
           directory: ./
-          file_name: .env
+          file_name: .env.local
           fail_on_empty: false
           sort_keys: false
 
