@@ -1,29 +1,49 @@
-# Create T3 App
+#  Salad
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Overview
+This application is a simple e-commerce app that "sells" archival artwork from museums.
 
-## What's next? How do I make an app with this?
+One can view available artwork with pagination and simple filtering to better navigate to artwork you wish to see. The application has a shopping cart managed through the database that allows for guest checkouts via localStorage to manage the cart ID. Additionally, you can place your order and view the cart summary that includes prices and quantities of each item in your cart.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## How To Run The App
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Follow the .env.sample and fill `.env.local` with secrets I've given or your own API keys
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+```
+nvm use
+yarn
+yarn db:migrate:dev
+yarn db:generate
+yarn seed
 
-## Learn More
+yarn dev
+yarn test
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## How It Works
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Insert image HERE
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Since Next.js is a full stack framework, you are managing both the server and the client all in one bundle. The line between server and client side can grow even fuzzier
+when you take in to account the introduction of React Server Components. These are asynchronous components that allow for top level await and enforce server side rendering (SSR). In my app, I aim to use SSR whenever possible as it comes with benefits towards search enginge optimization (SEO) and faster initial load times which are important in an e-commerce environment.
 
-## How do I deploy this?
+However, there is still a requirement for client side rendering (CSR) with components that require state, browser APIs, interactivity etc. So, in these cases (for example my `<AddToCartButton/>`) we use CSR.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+The data flow of the application changes based on the rendering model. In SSR, all queries and mutations run on the server, which permits the use of Prisma and top level awaits. The way the data flows in these components is that the server queries for data before rendering and then sends the client an HTML file. In the case of mutations, I used server actions which are RPC calls that run the mutations on the server and only send a simple request to be used on the client HTML file.
+
+For example, the page `/cart/123` is a SSR rendered page that queries the Prisma ORM which queries our SQLite server on our behalf for the cart with ID: 123. The server then renders this into an HTML file and sends a complete page experience to the user without the need for them to parse and execute client side JavaScript.
+
+Client side components however, need to fetch and mutate data differently. Prisma is off limits because it's only accessible from the server. Instead, we must rely on React Query hooks and API routes we've exposed for data fetching, and for data mutations we use Next.js' form of RPC calls, named  Server Actions.
+
+## Approach to Problem Solving
+Approach to Problem-Solving: Discuss your thought process when tackling this project and any challenges you faced.
+
+## Choice of Language / Framework
+Choice of Language/Framework: Justify your selection of programming language and framework (e.g., ease of use, performance, familiarity).
+
+## Future Extensions
+Future Extensions: Suggest how you would enhance the application for a more robust e-commerce experience (e.g., user authentication, payment processing, inventory management).
+
+## Testing Strategy
+
+Testing Strategy: Describe how you approached testing your application, including the types of tests you wrote and why.
