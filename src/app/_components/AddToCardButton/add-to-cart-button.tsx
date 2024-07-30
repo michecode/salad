@@ -17,7 +17,6 @@ export const AddToCartButton = ({ productId }: { productId: string }) => {
       setCartId(response.cart.id);
       toast(<p data-testid="toast">{response.message}</p>);
     } else {
-      console.log('faield');
       toast(<p data-testid="toast">{response.message}</p>);
     }
     setIsLoading(false);
