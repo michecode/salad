@@ -5,7 +5,7 @@ const PAGE_SIZE = 51; // Divisible by 3 since theres 3 cols
 
 // @DEV: Mostly just for testing
 export const createProduct = async (product: Product) => {
-  await db.product.create({
+  return await db.product.create({
     data: product,
   });
 };

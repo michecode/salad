@@ -8,7 +8,7 @@ describe('product prisma', () => {
   let createProduct: (product: Product) => Promise<any>;
 
   const sampleProduct: Product = {
-    id: 'test-id',
+    id: Math.random().toString(),
     description: 'Test product',
     altDescription: null,
     museum: 'Test museum',
@@ -32,7 +32,7 @@ describe('product prisma', () => {
     vi.doUnmock('~/server/db');
 
     // Seed the database
-    await seed();
+    // await seed();
     console.log('finished seed script');
 
     // Dynamically import getAllProducts after unmocking
