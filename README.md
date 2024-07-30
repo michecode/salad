@@ -92,4 +92,6 @@ My initial strategy was to use Test Driven Development (TDD) but, this ended up 
 
 In the end, I opted then to remove tRPC and rely on just Prisma and focus on unit tests for critical components. I expanded upon these tests by integration testing my Prisma functions to ensure the front end is always working with a functional back end.
 
+Also I've attached a GitHub action to this repo that runs on code pushes that auto runs tests. This would be a great place to further expand CI/CD capabilties of the app.
+
 If I were to expand on this strategy, I would want to use an end to end testing framework like Cypress to test core browser based user flows such as adding items to cart and checking out.
