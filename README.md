@@ -21,8 +21,7 @@ yarn test
 ```
 
 ## How It Works
-
-Insert image HERE
+![Untitled-2024-07-27-0013](https://github.com/user-attachments/assets/c92bd946-6454-4692-8d02-12c355245b26)
 
 Since Next.js is a full stack framework, you are managing both the server and the client all in one bundle. The line between server and client side can grow even fuzzier
 when you take in to account the introduction of React Server Components. These are asynchronous components that allow for top level await and enforce server side rendering (SSR). In my app, I aim to use SSR whenever possible as it comes with benefits towards search enginge optimization (SEO) and faster initial load times which are important in an e-commerce environment.
