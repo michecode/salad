@@ -19,6 +19,7 @@ yarn seed
 yarn dev
 yarn test
 ```
+If you re-seed the database or run integration tests make sure to delete `salad-cart-id` from your localStorage to restart your cart
 
 ## How It Works
 ![Untitled-2024-07-27-0013](https://github.com/user-attachments/assets/c92bd946-6454-4692-8d02-12c355245b26)
