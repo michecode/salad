@@ -32,16 +32,12 @@ export const OrderButton = ({ cartId }: { cartId: string }) => {
   const handleAdd = async () => {
     setIsLoading(true);
     const response = await placeOrderAction({ cartId, recipient: 'maddy', address: 'maddyhouse' });
-    console.log(response);
     if (response.success) {
       setCartId(null);
     }
-    console.log('setting response', response);
     setOrderResponse(response);
-    console.log('response set');
     setIsOpen(true);
     setIsLoading(false);
-    console.log(orderResponse);
   };
 
   const toggleOpen = () => {

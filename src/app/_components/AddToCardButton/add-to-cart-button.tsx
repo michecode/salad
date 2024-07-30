@@ -15,9 +15,10 @@ export const AddToCartButton = ({ productId }: { productId: string }) => {
     const response = await addToCartAction({ productId, cartId });
     if (response.success && response.cart?.id) {
       setCartId(response.cart.id);
-      toast(response.message);
+      toast(<p data-testid="toast">{response.message}</p>);
     } else {
-      toast(response.message);
+      console.log('faield');
+      toast(<p data-testid="toast">{response.message}</p>);
     }
     setIsLoading(false);
   };

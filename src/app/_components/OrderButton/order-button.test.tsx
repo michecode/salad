@@ -18,13 +18,11 @@ vi.mock('~/app/contexts/cart-id', () => ({
 
 vi.mock('~/lib/actions', () => ({
   placeOrderAction: vi.fn().mockResolvedValue({
-    response: {
-      success: true,
-      message: 'Order placed successfully',
-      order: {
-        totalCost: 10,
-        id: 'random-id',
-      }
+    success: true,
+    message: 'Order placed successfully',
+    order: {
+      totalCost: 10,
+      id: 'random-id',
     }
   }),
 }));
@@ -56,10 +54,16 @@ describe('Order Button', () => {
     render(<OrderButton cartId={testCartId} />);
     fireEvent.click(screen.getByRole('button'));
 
-    await waitFor(() => expect(screen.findByText('Order Placed')).toBeInTheDocument());
-  })
+    const el = await screen.findByText('Order Placed');
+    expect(el).toBeInTheDocument();
+  });
 
   it('alerts with failure', async () => {
+    vi.mocked(placeOrderAction).mockResolvedValue({
+      success: false,
+      message: 'Order Failed',
+    });
+
     render(<OrderButton cartId={testCartId} />);
     fireEvent.click(screen.getByRole('button'));
 

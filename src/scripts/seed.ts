@@ -23,7 +23,7 @@ const PAGES_PER_MUSEUM = 1;
 const prisma = new PrismaClient();
 const unsplash = createApi({ accessKey: process.env.UNSPLASH_ACCESS_KEY });
 
-async function seed() {
+export async function seed() {
   // ~~~~~~~~~~~~
   // Unsplash fetch
   // ~~~~~~~~~~~~
