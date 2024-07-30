@@ -24,6 +24,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Migrate DB
+        run: yarn db:migrate:dev
+
+      - name: Generate Prisma
+        run: yarn db:generate
+
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
