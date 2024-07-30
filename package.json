@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "lts/iron"
+    "node": "20.15.1"
   },
   "scripts": {
     "build": "next build",
